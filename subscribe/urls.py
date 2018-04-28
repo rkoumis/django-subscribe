@@ -1,7 +1,7 @@
 """URLs for the ``subscribe`` app."""
 from django.conf.urls import url
 
-from .views import SubscriptionCreateView, SubscriptionDeleteView
+from subscribe.views import SubscriptionCreateView, SubscriptionDeleteView
 
 
 urlpatterns = [
