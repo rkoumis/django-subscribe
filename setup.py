@@ -24,6 +24,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "Django>=1.11,<2.0",
+        "Django>=1.11",
     ],
 )
