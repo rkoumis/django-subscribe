@@ -6,6 +6,10 @@ from ..models import Subscription
 
 
 register = template.Library()
+import django
+if django.VERSION >= (1, 10):
+    register.assignment_tag = register.simple_tag
+
 
 
 @register.assignment_tag
