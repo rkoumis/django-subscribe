@@ -34,11 +34,13 @@ class Subscription(models.Model):
         _get_user_model(),
         verbose_name=_('User'),
         related_name='subscriptions',
+        on_delete=models.CASCADE,
     )
 
     content_type = models.ForeignKey(
         ContentType,
         related_name='subscribed',
+        on_delete=models.CASCADE,
     )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
