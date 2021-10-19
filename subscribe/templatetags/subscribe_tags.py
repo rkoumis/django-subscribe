@@ -4,9 +4,12 @@ from django.contrib.contenttypes.models import ContentType
 
 from ..models import Subscription
 
+import django
+
 
 register = template.Library()
-import django
+
+
 if django.VERSION >= (1, 10):
     register.assignment_tag = register.simple_tag
 
