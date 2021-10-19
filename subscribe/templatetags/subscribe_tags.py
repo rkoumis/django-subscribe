@@ -4,8 +4,14 @@ from django.contrib.contenttypes.models import ContentType
 
 from ..models import Subscription
 
+import django
+
 
 register = template.Library()
+
+
+if django.VERSION >= (1, 10):
+    register.assignment_tag = register.simple_tag
 
 
 @register.assignment_tag
@@ -40,8 +46,12 @@ def is_subscribed(user, obj):
     :param obj: Any object.
 
     """
-    if not user.is_authenticated():
-        return False
+    if django.VERSION >= (1, 10):
+        if not user.is_authenticated:
+            return False
+    else:
+        if not user.is_authenticated():
+            return False
 
     ctype = ContentType.objects.get_for_model(obj)
 
