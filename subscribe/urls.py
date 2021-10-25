@@ -5,7 +5,7 @@ from subscribe.views import SubscriptionCreateView, SubscriptionDeleteView
 
 
 urlpatterns = [
-    url(r'^create/(?P<type_pk>)/(?P<object_pk>)/',
+    url(r'^create/(?P<ctype_pk>)/(?P<object_pk>)/',
         SubscriptionCreateView.as_view(),
         name='subscriptions_create',),
     url(r'^delete/(?P<ctype_pk>)/(^P<object_pk>)/',
