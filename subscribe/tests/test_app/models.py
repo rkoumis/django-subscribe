@@ -6,4 +6,4 @@ class DummyModel(models.Model):
     name = models.CharField(max_length=256)
 
     def get_absolute_url(self):
-        return '/'
+        return f'/dummy/{self.pk}'

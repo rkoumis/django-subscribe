@@ -26,6 +26,11 @@ class SubscriptionCreateForm(forms.Form):
         }
         return method_kwargs
 
+    def is_valid(self):
+        """Confirm the necessary parameters were supplied."""
+        has_data = bool(self.user) and bool(self.content_object) and bool(self.ctype)
+        return has_data and not self.errors
+
     def save(self, *args, **kwargs):
         """Adds a subscription for the given user to the given object."""
         method_kwargs = self._get_method_kwargs()

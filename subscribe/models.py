@@ -53,4 +53,4 @@ class Subscription(models.Model):
 
     def __str__(self):
         return u'{0} subscribed to {1}'.format(
-            self.user.email, self.content_object)
+            self.user.email, self.object_id)

@@ -29,6 +29,8 @@ class SubscriptionCreateView(FormView):
         except ObjectDoesNotExist:
             return Http404
 
+        # Treat "put" and "get" just like "post".
+        request.method = "post"
         return super(SubscriptionCreateView, self).dispatch(
             request, *args, **kwargs)
 
