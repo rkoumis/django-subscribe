@@ -43,7 +43,7 @@ class Subscription(models.Model):
         related_name='subscribed',
         on_delete=models.CASCADE,
     )
-    object_id = models.PositiveIntegerField()
+    object_id = models.CharField(max_length=100)
     content_object = GenericForeignKey('content_type', 'object_id')
 
     creation_date = models.DateTimeField(
@@ -53,4 +53,4 @@ class Subscription(models.Model):
 
     def __str__(self):
         return u'{0} subscribed to {1}'.format(
-            self.user.email, self.content_object)
+            self.user.email, self.object_id)

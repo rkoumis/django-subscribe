@@ -6,6 +6,7 @@ from django_libs.tests.mixins import ViewRequestFactoryTestMixin
 from mixer.backend.django import mixer
 
 from .. import views
+from .. import models
 
 
 class SubscriptionCreateViewTestCase(ViewRequestFactoryTestMixin, TestCase):
@@ -25,7 +26,26 @@ class SubscriptionCreateViewTestCase(ViewRequestFactoryTestMixin, TestCase):
 
     def test_callable(self):
         """Should be callable if user is authenticated."""
-        self.is_callable(user=self.user)
+        # No subscription should exist before the call.
+        pk = self.dummy.pk
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        self.assertEqual(0, len(subscription))
+        self.redirects(user=self.user, to=f"/dummy/{self.dummy.pk}")
+        # self.is_callable(user=self.user)
+        # Query again, and there should be one.
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        self.assertEqual(1, len(subscription))
+
+    def test_postable(self):
+        """Should be postable if user is authenticated."""
+        # No subscription should exist before the call.
+        pk = self.dummy.pk
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        self.assertEqual(0, len(subscription))
+        self.is_postable(user=self.user, to=f'/dummy/{pk}')
+        # Query again, and there should be one.
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        self.assertEqual(1, len(subscription))
 
 
 class SubscriptionDeleteViewTestCase(ViewRequestFactoryTestMixin, TestCase):
@@ -50,5 +70,23 @@ class SubscriptionDeleteViewTestCase(ViewRequestFactoryTestMixin, TestCase):
 
     def test_callable(self):
         """Should be callable if user is authenticated."""
-        self.is_callable(user=self.subscription.user)
-        self.is_postable(user=self.subscription.user, to='/')
+        pk = self.subscription.object_id
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        # A subscription should exist before the call.
+        self.assertEqual(1, len(subscription))
+        # self.is_callable(user=self.subscription.user)
+        self.redirects(user=self.subscription.user, to=f'/dummy/{pk}')
+        # Query again, and there should be none.
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        self.assertEqual(0, len(subscription))
+
+    def test_postable(self):
+        """Should be postable if user is authenticated."""
+        pk = self.subscription.object_id
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        # A subscription should exist before the call.
+        self.assertEqual(1, len(subscription))
+        self.is_postable(user=self.subscription.user, to=f'/dummy/{pk}')
+        # Query again, and there should be none.
+        subscription = models.Subscription.objects.filter(object_id=pk).all()
+        self.assertEqual(0, len(subscription))
